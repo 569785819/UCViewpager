@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <color name="colorPrimary">#3F51B5</color>
+    <color name="colorPrimaryDark">#303F9F</color>
+    <color name="colorAccent">#FF4081</color>
+
+    <color name="black_overlay">#66000000</color>
+    <color name="theme_blue">#52ace5</color>
+    <color name="theme_blue_dark">#0e6297</color>
+
+    <color name="text_tab_gray">#808080</color>
+    <color name="tab_bg">#F8F8F8</color>
+</resources>
