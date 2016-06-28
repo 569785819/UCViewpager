@@ -8,8 +8,8 @@ import android.util.AttributeSet;
 import android.view.ViewGroup;
 
 import com.zhejunzhu.ucviewpager.utils.LLog;
-import com.zhejunzhu.ucviewpager.weight.magicadapter.CommonRecyclerAdapter;
-import com.zhejunzhu.ucviewpager.weight.magicadapter.CommonViewHolder;
+import com.zhejunzhu.ucviewpager.weight.commonadapter.CommonRecyclerAdapter;
+import com.zhejunzhu.ucviewpager.weight.commonadapter.CommonViewHolder;
 
 public abstract class TRecyclerViewLayout<TData> extends SwipeRefreshLayout {
     private RecyclerView mRecyclerView;

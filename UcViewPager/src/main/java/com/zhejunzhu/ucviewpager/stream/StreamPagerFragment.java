@@ -14,7 +14,7 @@ import com.zhejunzhu.ucviewpager.R;
 import com.zhejunzhu.ucviewpager.utils.AndroidUtils;
 import com.zhejunzhu.ucviewpager.utils.LLog;
 import com.zhejunzhu.ucviewpager.weight.TRecyclerViewLayout;
-import com.zhejunzhu.ucviewpager.weight.magicadapter.CommonViewHolder;
+import com.zhejunzhu.ucviewpager.weight.commonadapter.CommonViewHolder;
 
 import java.util.ArrayList;
 import java.util.Date;
