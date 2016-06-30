@@ -11,6 +11,7 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 public class CommonViewHolder extends RecyclerView.ViewHolder {
+    private static final int KEY_DATA = "key_data".hashCode();
     private final SparseArray<View> mViews;
     private View mConvertView;
 
@@ -57,6 +58,21 @@ public class CommonViewHolder extends RecyclerView.ViewHolder {
         ImageView view = getView(viewId);
         view.setImageBitmap(bm);
         return this;
+    }
+
+    public CommonViewHolder setOnClickListener(int viewId, View.OnClickListener onClickListener) {
+        View view = getView(viewId);
+        view.setOnClickListener(onClickListener);
+        return this;
+    }
+
+    public static void setData(View view, Object data) {
+        view.setTag(KEY_DATA, data);
+    }
+
+    public static Object getData(View view) {
+        Object data = view.getTag(KEY_DATA);
+        return data;
     }
 
 //    public CommonViewHolder setImageByUrl(int viewId, String url) {

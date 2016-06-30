@@ -2,6 +2,7 @@ package com.zhejunzhu.ucviewpager.utils;
 
 import android.content.Context;
 import android.os.Build;
+import android.view.View;
 import android.view.WindowManager;
 
 public class AndroidUtils {
@@ -32,5 +33,19 @@ public class AndroidUtils {
     public static int getWindowsHeight(Context context) {
         WindowManager wm = (WindowManager) context.getSystemService(Context.WINDOW_SERVICE);
         return wm.getDefaultDisplay().getHeight();
+    }
+
+    public static int getViewMakeMeasureWidth(View view) {
+        int width = View.MeasureSpec.makeMeasureSpec(0, View.MeasureSpec.UNSPECIFIED);
+        int height = View.MeasureSpec.makeMeasureSpec(0, View.MeasureSpec.UNSPECIFIED);
+        view.measure(width, height);
+        return view.getMeasuredWidth();
+    }
+
+    public static int getViewMakeMeasureHeight(View view) {
+        int width = View.MeasureSpec.makeMeasureSpec(0, View.MeasureSpec.UNSPECIFIED);
+        int height = View.MeasureSpec.makeMeasureSpec(0, View.MeasureSpec.UNSPECIFIED);
+        view.measure(width, height);
+        return view.getMeasuredHeight();
     }
 }

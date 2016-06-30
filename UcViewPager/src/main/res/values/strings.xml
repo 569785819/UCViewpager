@@ -3,4 +3,12 @@
 
     <string name="dummy_button">Dummy Button</string>
     <string name="dummy_content">DUMMY\nCONTENT</string>
+
+    <string name="stream_refresh_drag">下拉刷新</string>
+    <string name="stream_refresh_go">松手刷新</string>
+    <string name="stream_refresh_ing">加载中...</string>
+    <string name="stream_refresh_count">已加载%s条数据</string>
+    <string name="stream_refresh_error_net">网络异常，请检查网络</string>
+    <string name="stream_refresh_error_fault">获取数据失败，稍后再试</string>
+
 </resources>

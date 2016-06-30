@@ -19,6 +19,7 @@ public abstract class CommonRecyclerAdapter<TData> extends RecyclerView.Adapter 
     protected final List<TData> mDatas = new ArrayList<>();
 
     protected boolean mHasFootView = true;
+    protected boolean mHasHeadView = false;
 
     public CommonRecyclerAdapter(Context context) {
         this.mContext = context;
@@ -26,11 +27,15 @@ public abstract class CommonRecyclerAdapter<TData> extends RecyclerView.Adapter 
     }
 
     public void addTopDatas(List<TData> newDatas) {
-        mDatas.addAll(0, newDatas);
+        synchronized (mDatas){
+            mDatas.addAll(0, newDatas);
+        }
     }
 
     public void addBottomDatas(List<TData> newDatas) {
-        mDatas.addAll(newDatas);
+        synchronized (mDatas){
+            mDatas.addAll(newDatas);
+        }
     }
 
     @Override
@@ -41,12 +46,14 @@ public abstract class CommonRecyclerAdapter<TData> extends RecyclerView.Adapter 
 
     @Override
     public int getItemViewType(int position) {
-        LLog.e("getItemViewType : " + position);
-        if (mHasFootView && position == mDatas.size()) {
-            return getFootViewId();
-        } else {
-            return getLayoutId(mDatas.get(position), position);
+        LLog.v("getItemViewType : " + position);
+        if (mHasHeadView && position == 0) {
+            return getHeadViewId();
         }
+        if (mHasFootView && position == getItemCount() - 1) {
+            return getFootViewId();
+        }
+        return getLayoutId(mDatas.get(position), position);
     }
 
     public abstract int getLayoutId(TData data, int position);
@@ -57,11 +64,15 @@ public abstract class CommonRecyclerAdapter<TData> extends RecyclerView.Adapter 
     public void onBindViewHolder(RecyclerView.ViewHolder holder, int position) {
         if (holder instanceof CommonViewHolder) {
             LLog.e("onBindViewHolder : " + position);
-            if (mHasFootView && position == mDatas.size()) {
-                bindFootView(holder);
-            } else {
-                bindView((CommonViewHolder) holder, mDatas.get(position), position);
+            if (mHasHeadView && position == 0) {
+                bindHeadView(holder);
+                return;
             }
+            if (mHasFootView && position == getItemCount() - 1) {
+                bindFootView(holder);
+                return;
+            }
+            bindView((CommonViewHolder) holder, mDatas.get(position), position);
         } else {
             LLog.e("CommonRecyclerAdapter onBindViewHolder error");
         }
@@ -69,19 +80,14 @@ public abstract class CommonRecyclerAdapter<TData> extends RecyclerView.Adapter 
 
     @Override
     public int getItemCount() {
-        if (mHasFootView) {
-            return mDatas.size() == 0 ? 0 : mDatas.size() + 1;
-        } else {
-            return mDatas.size();
+        int count = mDatas.size();
+        if (mHasFootView && count != 0) {
+            count++;
         }
-    }
-
-    public boolean isHasFootView() {
-        return mHasFootView;
-    }
-
-    public void setHasFootView(boolean hasFootView) {
-        this.mHasFootView = hasFootView;
+        if (mHasHeadView && count != 0) {
+            count++;
+        }
+        return count;
     }
 
     protected int getFootViewPosition() {
@@ -97,6 +103,14 @@ public abstract class CommonRecyclerAdapter<TData> extends RecyclerView.Adapter 
     }
 
     public void bindFootView(RecyclerView.ViewHolder holder) {
-
     }
+
+    public int getHeadViewId() {
+        return NORMAL_FOOT_LAYOUT_ID;
+    }
+
+    public void bindHeadView(RecyclerView.ViewHolder holder) {
+    }
+
+
 }

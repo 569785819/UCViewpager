@@ -3,18 +3,18 @@ package com.zhejunzhu.ucviewpager.stream;
 import android.content.Context;
 import android.os.Bundle;
 import android.os.Handler;
-import android.os.Looper;
 import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.FrameLayout;
+import android.widget.Toast;
 
 import com.zhejunzhu.ucviewpager.R;
 import com.zhejunzhu.ucviewpager.utils.AndroidUtils;
 import com.zhejunzhu.ucviewpager.utils.LLog;
-import com.zhejunzhu.ucviewpager.weight.TRecyclerViewLayout;
 import com.zhejunzhu.ucviewpager.weight.commonadapter.CommonViewHolder;
+import com.zhejunzhu.ucviewpager.weight.recyclerview.RecyclerModelImp;
+import com.zhejunzhu.ucviewpager.weight.recyclerview.TRefreshRecyclerLayout;
 
 import java.util.ArrayList;
 import java.util.Date;
@@ -22,9 +22,9 @@ import java.util.Date;
 public class StreamPagerFragment extends Fragment {
     private String mStrTab;
 
-    private ViewGroup mContentView;
+    private StreamRefreshRecyclerLayout mRefreshRecyclerLayout;
 
-    private StreamRecyclerLayout mStreamRecyclerLayout;
+    private StreamRecyclerMode mStreamRecyclerMode;
 
     public static StreamPagerFragment newInstance(String tab) {
         StreamPagerFragment fragment = new StreamPagerFragment();
@@ -40,24 +40,26 @@ public class StreamPagerFragment extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         LLog.v("StreamPagerFragment onCreateView : " + mStrTab);
-        if (mContentView == null) {
-            mContentView = new FrameLayout(getContext());
-            mContentView.setPadding(0, 0, 0, AndroidUtils.dip2px(getContext(), 60));
-            mStreamRecyclerLayout = new StreamRecyclerLayout(getContext());
-            mContentView.addView(mStreamRecyclerLayout);
+        if (mRefreshRecyclerLayout == null) {
+            mRefreshRecyclerLayout = new StreamRefreshRecyclerLayout(getContext());
+            mStreamRecyclerMode = new StreamRecyclerMode();
+            mRefreshRecyclerLayout.setRecyclerMode(mStreamRecyclerMode);
+            //
+            mRefreshRecyclerLayout.setPadding(0, 0, 0, AndroidUtils.dip2px(getContext(), 60));
         }
 
-        if (mContentView.getParent() != null) {
-            ((ViewGroup) mContentView.getParent()).removeView(mContentView);
+        if (mRefreshRecyclerLayout.getParent() != null) {
+            ((ViewGroup) mRefreshRecyclerLayout.getParent()).removeView(mRefreshRecyclerLayout);
         }
-        return mContentView;
+        return mRefreshRecyclerLayout;
     }
 
     @Override
     public void onResume() {
         LLog.v("StreamPagerFragment onResume : " + mStrTab);
-        mStreamRecyclerLayout.doLoadMore();
         super.onResume();
+
+        mStreamRecyclerMode.loadMore();
     }
 
     @Override
@@ -66,9 +68,9 @@ public class StreamPagerFragment extends Fragment {
     }
 
 
-    public class StreamRecyclerLayout extends TRecyclerViewLayout<Date> {
+    public class StreamRefreshRecyclerLayout extends TRefreshRecyclerLayout<Date> {
 
-        public StreamRecyclerLayout(Context context) {
+        public StreamRefreshRecyclerLayout(Context context) {
             super(context);
         }
 
@@ -79,38 +81,49 @@ public class StreamPagerFragment extends Fragment {
 
         @Override
         public void bindItemView(CommonViewHolder viewHolder, Date date, int position) {
-            viewHolder.setText(R.id.TextView_time, date.toString());
+            viewHolder.setText(R.id.TextView_time, position + "--" + date.toString());
+            View clickView = viewHolder.getView(R.id.View_Item_click);
+            CommonViewHolder.setData(clickView, date);
+            clickView.setOnClickListener(mClickListener);
         }
 
+        OnClickListener mClickListener = new OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Date data = (Date) CommonViewHolder.getData(v);
+                Toast.makeText(v.getContext(), "点击：" + data.toString(), Toast.LENGTH_SHORT).show();
+            }
+        };
+    }
+
+    public class StreamRecyclerMode extends RecyclerModelImp {
+
         @Override
-        public void doRefreshAndLoad() {
-            LLog.e("StreamRecyclerLayout doRefreshAndLoad()");
-            new Handler(Looper.getMainLooper()).postDelayed(new Runnable() {
+        public void doRefreshAndLoad(final TRefreshRecyclerLayout refreshRecyclerLayout) {
+            LLog.e("StreamRecyclerMode doRefreshAndLoad");
+            new Handler().postDelayed(new Runnable() {
                 @Override
                 public void run() {
                     ArrayList<Date> moniDatas = new ArrayList<>();
                     for (int i = 0; i < 10; i++) {
                         moniDatas.add(new Date());
                     }
-                    mStreamRecyclerLayout.getRecyclerAdapter().addTopDatas(moniDatas);
-                    mStreamRecyclerLayout.getRecyclerAdapter().notifyDataSetChanged();
-                    mStreamRecyclerLayout.setRefreshing(false);
+                    refreshRecyclerLayout.recivedRefreshAndLoadData(moniDatas);
                 }
-            }, 3000);
+            }, 2000);
         }
 
         @Override
-        public void doLoadMore() {
-            LLog.e("StreamRecyclerLayout doLoadMore()");
-            new Handler(Looper.getMainLooper()).postDelayed(new Runnable() {
+        public void doLoadMore(final TRefreshRecyclerLayout refreshRecyclerLayout) {
+            LLog.e("StreamRecyclerMode doLoadMore");
+            new Handler().postDelayed(new Runnable() {
                 @Override
                 public void run() {
-                    ArrayList<java.lang.Object> moniDatas = new ArrayList<>();
+                    ArrayList<Date> moniDatas = new ArrayList<>();
                     for (int i = 0; i < 10; i++) {
                         moniDatas.add(new Date());
                     }
-                    mStreamRecyclerLayout.getRecyclerAdapter().addBottomDatas(moniDatas);
-                    mStreamRecyclerLayout.getRecyclerAdapter().notifyDataSetChanged();
+                    refreshRecyclerLayout.recivedLoadmoreData(moniDatas);
                 }
             }, 2000);
         }
