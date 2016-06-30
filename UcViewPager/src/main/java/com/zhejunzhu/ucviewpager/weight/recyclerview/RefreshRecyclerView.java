@@ -23,15 +23,13 @@ public class RefreshRecyclerView extends RecyclerView {
 
     private int mOverScrollY = 0;
 
-    private float mDownX = 0;
-
-    private float mDownY = 0;
-
     private float mLastX = 0;
 
     private float mLastY = 0;
 
     private MotionEvent mDownEvent;
+
+    private boolean mTouchDown = false;
 
     private boolean mIsAniming = false;
 
@@ -89,18 +87,10 @@ public class RefreshRecyclerView extends RecyclerView {
     private OverScrollListener mOverScrollListener = new OverScrollListener() {
         @Override
         public void overScrollBy(int dy) {
-//            if (isEnable && !isLoadingData && isTouching &&
-//                    ((dy < 0 && headerImage.getLayoutParams().height < headerImageMaxHeight)
-//                            || (dy > 0 && headerImage.getLayoutParams().height > headerImageHeight))) {
-//                mHandler.obtainMessage(0, dy, 0, null).sendToTarget();
-//                onScrollChanged(0, 0, 0, 0);
-//            }
             if (mIsOverTop == false && mIsRefreshing == false && dy < 0) {
-                LLog.e("OverScrollListener overScrollBy");
+                LLog.i("OverScrollListener overScrollBy");
                 mIsOverTop = true;
                 mOverScrollY = 0;
-                mDownEvent.setAction(MotionEvent.ACTION_UP);
-                dispatchTouchEvent(mDownEvent);
             }
         }
     };
@@ -116,8 +106,9 @@ public class RefreshRecyclerView extends RecyclerView {
         switch (ev.getAction()) {
             case MotionEvent.ACTION_DOWN:
                 LLog.e("MotionEvent.ACTION_DOWN");
-                mDownX = nowX;
-                mDownY = nowY;
+                mTouchDown = true;
+                mLastX = nowX;
+                mLastY = nowY;
                 mDownEvent = MotionEvent.obtain(ev);
                 mOverScrollY = 0;
                 break;
@@ -127,8 +118,19 @@ public class RefreshRecyclerView extends RecyclerView {
                 mLastX = nowX;
                 mLastY = nowY;
 
+                if (mTouchDown == false) {
+                    break;
+                }
+
                 LLog.v("mOverScrollY : " + mOverScrollY);
                 if (mIsOverTop) {
+                    if (mDownEvent != null) {
+                        mDownEvent.setLocation(mDownEvent.getX(), -1);
+                        mDownEvent.setAction(MotionEvent.ACTION_CANCEL);
+                        super.dispatchTouchEvent(mDownEvent);
+                        mDownEvent = null;
+                    }
+
                     mOverScrollY = (int) (mOverScrollY + difY);
                     if (mOverScrollY < 0) {
                         setOverDragY(0);
@@ -139,10 +141,15 @@ public class RefreshRecyclerView extends RecyclerView {
                     }
                 }
                 break;
-
             case MotionEvent.ACTION_CANCEL:
             case MotionEvent.ACTION_UP:
                 LLog.e("MotionEvent.ACTION_UP");
+                if (mTouchDown) {
+                    mTouchDown = false;
+                } else {
+                    break;
+                }
+
                 if (mIsOverTop && mOverScrollY > 0) {
                     int toggleY = RefreshStateLayout.sHeight;
                     if (mOverScrollY < toggleY) {
