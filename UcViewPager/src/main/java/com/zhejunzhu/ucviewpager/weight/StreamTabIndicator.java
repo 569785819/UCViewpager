@@ -189,13 +189,13 @@ public class StreamTabIndicator extends HorizontalScrollView implements PageIndi
         TextView rightTab = (TextView) mTabLayout.getChildAt(index + 1);
         if (leftTab != null) {
             leftTab.setTextColor(Color.rgb((int) (11 + 177 * process), 188, 188));
-            leftTab.setScaleX(1 + (1 - process) / 3);
-            leftTab.setScaleY(1 + (1 - process) / 3);
+            leftTab.setScaleX(1 + (1 - process) / 8);
+            leftTab.setScaleY(1 + (1 - process) / 8);
         }
         if (rightTab != null) {
             rightTab.setTextColor(Color.rgb((int) (188 - process * 177), 188, 188));
-            rightTab.setScaleX(1 + process / 3);
-            rightTab.setScaleY(1 + process / 3);
+            rightTab.setScaleX(1 + process / 8);
+            rightTab.setScaleY(1 + process / 8);
         }
         if (mListener != null) {
             mListener.onPageScrolled(index, process, arg2);
