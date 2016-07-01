@@ -8,9 +8,10 @@
     <color name="write">#ffffff</color>
 
     <color name="theme_blue">#52ace5</color>
-    <color name="theme_blue_dark">#0e6297</color>
+    <color name="theme_blue_dark">#116699</color>
 
-    <color name="text_tab_gray">#808080</color>
+    <color name="text_tab_gray">#999999</color>
+    <color name="text_tab_select">#119999</color>
     <color name="tab_bg">#F8F8F8</color>
 
 </resources>

@@ -107,6 +107,7 @@ public class RefreshRecyclerView extends RecyclerView {
             case MotionEvent.ACTION_DOWN:
                 LLog.e("MotionEvent.ACTION_DOWN");
                 mTouchDown = true;
+                mIsOverTop = false;
                 mLastX = nowX;
                 mLastY = nowY;
                 mDownEvent = MotionEvent.obtain(ev);

@@ -3,12 +3,6 @@ package com.zhejunzhu.ucviewpager;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.FragmentActivity;
-import android.support.v4.app.FragmentManager;
-import android.support.v4.app.FragmentTransaction;
-import android.view.LayoutInflater;
-import android.view.ViewGroup;
-
-import com.zhejunzhu.ucviewpager.stream.StreamPagerFragment;
 
 public class MainTabActivity extends FragmentActivity {
     MainTab mMainTab;
@@ -16,29 +10,29 @@ public class MainTabActivity extends FragmentActivity {
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-//        mMainTab = new MainTab(this, getSupportFragmentManager());
-//        setContentView(mMainTab.getView());
+        mMainTab = new MainTab(this, getSupportFragmentManager());
+        setContentView(mMainTab.getView());
 
         //test fragment stream
-        ViewGroup view = (ViewGroup) LayoutInflater.from(this).inflate(R.layout.activity_main_tab, null);
-        view.removeAllViews();
-        setContentView(view);
-
-        FragmentManager fm = getSupportFragmentManager();
-        FragmentTransaction transaction = fm.beginTransaction();
-        StreamPagerFragment page = StreamPagerFragment.newInstance("推荐");
-        transaction.replace(R.id.main_layout, page);
-        transaction.commit();
+//        ViewGroup view = (ViewGroup) LayoutInflater.from(this).inflate(R.layout.activity_main_tab, null);
+//        view.removeAllViews();
+//        setContentView(view);
+//
+//        FragmentManager fm = getSupportFragmentManager();
+//        FragmentTransaction transaction = fm.beginTransaction();
+//        StreamPagerFragment page = StreamPagerFragment.newInstance("推荐");
+//        transaction.replace(R.id.main_layout, page);
+//        transaction.commit();
     }
 
-//    @Override
-//    public void onBackPressed() {
-//        mMainTab.onBackPressed();
-//    }
-//
-//    @Override
-//    protected void onDestroy() {
-//        super.onDestroy();
-//        mMainTab.onDestroy();
-//    }
+    @Override
+    public void onBackPressed() {
+        mMainTab.onBackPressed();
+    }
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        mMainTab.onDestroy();
+    }
 }

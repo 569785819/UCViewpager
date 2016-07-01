@@ -7,7 +7,6 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
-import com.viewpagerindicator.TabPageIndicator;
 import com.zhejunzhu.ucviewpager.MainTitleViewContainer;
 import com.zhejunzhu.ucviewpager.R;
 import com.zhejunzhu.ucviewpager.viewobserver.MainViewPagerChangedObservable;
@@ -15,6 +14,7 @@ import com.zhejunzhu.ucviewpager.viewobserver.ProcessViewChangedObserver;
 import com.zhejunzhu.ucviewpager.viewobserver.StreamViewChangedObservable;
 import com.zhejunzhu.ucviewpager.viewobserver.ViewChangedObservableManager;
 import com.zhejunzhu.ucviewpager.weight.MainViewPager;
+import com.zhejunzhu.ucviewpager.weight.StreamTabIndicator;
 import com.zhejunzhu.ucviewpager.weight.StreamViewpager;
 
 import butterknife.BindView;
@@ -31,7 +31,9 @@ public class StreamPagerContainer {
     @BindView(R.id.streamViewPager)
     StreamViewpager mStreamViewPager;
     @BindView(R.id.streamIndicator)
-    TabPageIndicator mIndicator;
+    StreamTabIndicator mIndicator;
+    @BindView(R.id.streamIndicator_layout)
+    ViewGroup mIndicatorLayout;
 
     private StreamPagerAdapter mStreamPagerAdapter;
 
@@ -104,12 +106,12 @@ public class StreamPagerContainer {
                 return;
             }
             mStreamViewPager.setY(sTitleLayoutHeight - process * (sTitleLayoutHeight -
-                    sTitleStreamTopHeight - mIndicator.getHeight()));
+                    sTitleStreamTopHeight - mIndicatorLayout.getHeight()));
             if (process == 0) {
-                mIndicator.setVisibility(View.GONE);
+                mIndicatorLayout.setVisibility(View.GONE);
             } else {
-                mIndicator.setVisibility(View.VISIBLE);
-                mIndicator.setY(sTitleLayoutHeight - process * (sTitleLayoutHeight - sTitleStreamTopHeight));
+                mIndicatorLayout.setVisibility(View.VISIBLE);
+                mIndicatorLayout.setY(sTitleLayoutHeight - process * (sTitleLayoutHeight - sTitleStreamTopHeight));
             }
         }
     };

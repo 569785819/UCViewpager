@@ -4,11 +4,32 @@
              android:background="#ffffff"
              android:orientation="vertical">
 
-    <com.viewpagerindicator.TabPageIndicator
-        android:id="@+id/streamIndicator"
+    <RelativeLayout
+        android:id="@+id/streamIndicator_layout"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:background="@color/tab_bg"/>
+        android:background="@color/tab_bg">
+
+        <ImageView
+            android:id="@+id/Stream_tab_add"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentRight="true"
+            android:src="@drawable/stream_add"/>
+
+        <com.zhejunzhu.ucviewpager.weight.StreamTabIndicator
+            android:id="@+id/streamIndicator"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_toLeftOf="@+id/Stream_tab_add"/>
+
+        <View
+            android:layout_width="40dp"
+            android:layout_height="wrap_content"
+            android:layout_alignBottom="@+id/streamIndicator"
+            android:layout_toLeftOf="@+id/Stream_tab_add"
+            android:background="@drawable/tab_shade"/>
+    </RelativeLayout>
 
     <com.zhejunzhu.ucviewpager.weight.StreamViewpager
         android:id="@+id/streamViewPager"

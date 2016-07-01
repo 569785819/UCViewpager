@@ -14,9 +14,10 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package com.viewpagerindicator;
+package com.zhejunzhu.ucviewpager.weight;
 
 import android.content.Context;
+import android.graphics.Color;
 import android.support.v4.view.PagerAdapter;
 import android.support.v4.view.ViewPager;
 import android.support.v4.view.ViewPager.OnPageChangeListener;
@@ -27,6 +28,9 @@ import android.widget.HorizontalScrollView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
+import com.viewpagerindicator.IconPagerAdapter;
+import com.viewpagerindicator.IcsLinearLayout;
+import com.viewpagerindicator.PageIndicator;
 import com.zhejunzhu.ucviewpager.R;
 import com.zhejunzhu.ucviewpager.utils.LLog;
 
@@ -37,18 +41,32 @@ import static android.view.ViewGroup.LayoutParams.WRAP_CONTENT;
  * This widget implements the dynamic action bar tab behavior that can change
  * across different configurations or circumstances.
  */
-public class TabPageIndicator extends HorizontalScrollView implements PageIndicator {
+public class StreamTabIndicator extends HorizontalScrollView implements PageIndicator {
     /**
      * Title text used when no title is provided by the adapter.
      */
     private static final CharSequence EMPTY_TITLE = "";
+
     private final IcsLinearLayout mTabLayout;
+
     private Runnable mTabSelector;
+
     private ViewPager mViewPager;
+
     private OnPageChangeListener mListener;
+
     private int mMaxTabWidth;
+
     private int mSelectedTabIndex;
+
     private OnTabReselectedListener mTabReselectedListener;
+
+    private int mUnSelectColor;
+
+    private int mSelectColor;
+
+    private int mTextSize = 18;
+
     private final OnClickListener mTabClickListener = new OnClickListener() {
         public void onClick(View view) {
             TabView tabView = (TabView) view;
@@ -61,14 +79,21 @@ public class TabPageIndicator extends HorizontalScrollView implements PageIndica
         }
     };
 
-    public TabPageIndicator(Context context) {
+    public StreamTabIndicator(Context context) {
         this(context, null);
+
+//        mSelectColor = context.getResources().getColor(R.color.text_tab_select);
+//        mUnSelectColor = context.getResources().getColor(R.color.text_tab_gray);
+        mSelectColor = Color.rgb(11, 188, 188);
+        mUnSelectColor = Color.rgb(188, 188, 188);
     }
 
-    public TabPageIndicator(Context context, AttributeSet attrs) {
+    public StreamTabIndicator(Context context, AttributeSet attrs) {
         super(context, attrs);
         setHorizontalScrollBarEnabled(false);
 
+        mSelectColor = Color.rgb(11, 188, 188);
+        mUnSelectColor = Color.rgb(188, 188, 188);
         mTabLayout = new IcsLinearLayout(context, R.attr.vpiTabPageIndicatorStyle);
         addView(mTabLayout, new ViewGroup.LayoutParams(WRAP_CONTENT, MATCH_PARENT));
     }
@@ -158,17 +183,36 @@ public class TabPageIndicator extends HorizontalScrollView implements PageIndica
     }
 
     @Override
-    public void onPageScrolled(int arg0, float arg1, int arg2) {
+    public void onPageScrolled(int index, float process, int arg2) {
+        LLog.e("indicator onPageScrolled : " + index + "   " + process + "   " + arg2);
+        TextView leftTab = (TextView) mTabLayout.getChildAt(index);
+        TextView rightTab = (TextView) mTabLayout.getChildAt(index + 1);
+        if (leftTab != null) {
+            leftTab.setTextColor(Color.rgb((int) (11 + 177 * process), 188, 188));
+            leftTab.setScaleX(1 + (1 - process) / 3);
+            leftTab.setScaleY(1 + (1 - process) / 3);
+        }
+        if (rightTab != null) {
+            rightTab.setTextColor(Color.rgb((int) (188 - process * 177), 188, 188));
+            rightTab.setScaleX(1 + process / 3);
+            rightTab.setScaleY(1 + process / 3);
+        }
         if (mListener != null) {
-            mListener.onPageScrolled(arg0, arg1, arg2);
+            mListener.onPageScrolled(index, process, arg2);
         }
     }
 
     @Override
-    public void onPageSelected(int arg0) {
-        setCurrentItem(arg0);
+    public void onPageSelected(int index) {
+        setCurrentItem(index);
+        TextView leftTab = (TextView) mTabLayout.getChildAt(index);
+        if (leftTab != null) {
+            leftTab.setTextColor(mUnSelectColor);
+            leftTab.setScaleX(1);
+            leftTab.setScaleY(1);
+        }
         if (mListener != null) {
-            mListener.onPageSelected(arg0);
+            mListener.onPageSelected(index);
         }
     }
 
@@ -228,12 +272,6 @@ public class TabPageIndicator extends HorizontalScrollView implements PageIndica
             return;
         }
 
-        LLog.e("tab indicator setCurrentItem : " + mSelectedTabIndex + "->" + item);
-        TabView lastTab = (TabView) mTabLayout.getChildAt(mSelectedTabIndex);
-        lastTab.setTextColor(getResources().getColor(R.color.text_tab_gray));
-        TabView curTab = (TabView) mTabLayout.getChildAt(item);
-        curTab.setTextColor(getResources().getColor(R.color.theme_blue_dark));
-
         mSelectedTabIndex = item;
         mViewPager.setCurrentItem(item);
 
@@ -270,9 +308,9 @@ public class TabPageIndicator extends HorizontalScrollView implements PageIndica
 
         public TabView(Context context) {
             super(context, null, R.attr.vpiTabPageIndicatorStyle);
-            setTextColor(getResources().getColor(R.color.text_tab_gray));
-            setPadding(25, 10, 25, 10);
-            setTextSize(18);
+            setPadding(35, 10, 35, 10);
+            setTextSize(mTextSize);
+            setTextColor(mUnSelectColor);
         }
 
         @Override
