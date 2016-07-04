@@ -9,6 +9,7 @@ import android.view.ViewGroup;
 
 import com.zhejunzhu.ucviewpager.MainTitleViewContainer;
 import com.zhejunzhu.ucviewpager.R;
+import com.zhejunzhu.ucviewpager.utils.LLog;
 import com.zhejunzhu.ucviewpager.viewobserver.MainViewPagerChangedObservable;
 import com.zhejunzhu.ucviewpager.viewobserver.ProcessViewChangedObserver;
 import com.zhejunzhu.ucviewpager.viewobserver.StreamViewChangedObservable;
@@ -61,12 +62,6 @@ public class StreamPagerContainer {
 
     public void bindMainViewPager(MainViewPager mainViewPager) {
         mainViewPager.setStreamToggledListener(mOnViewPagerStreamToggledListener);
-        mainViewPager.setStreamToggledListener(new MainViewPager.OnViewPagerStreamToggledListener() {
-            @Override
-            public void onViewPagerStreamToggled(boolean isOpen) {
-                mStreamViewPager.setAllowScorll(isOpen);
-            }
-        });
     }
 
     public void initObserver() {
@@ -80,11 +75,9 @@ public class StreamPagerContainer {
             MainViewPager.OnViewPagerStreamToggledListener() {
                 @Override
                 public void onViewPagerStreamToggled(boolean isOpen) {
-                    if (isOpen) {
-                        mStreamViewPager.setAllowScorll(false);
-                    } else {
-                        mStreamViewPager.setAllowScorll(true);
-                    }
+                    LLog.e("onViewPagerStreamToggled : " + isOpen);
+                    mStreamViewPager.setAllowScorll(isOpen);
+                    mIndicator.setCanClickable(isOpen);
                 }
             };
 

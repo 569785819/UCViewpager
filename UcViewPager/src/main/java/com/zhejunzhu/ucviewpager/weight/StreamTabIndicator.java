@@ -67,8 +67,13 @@ public class StreamTabIndicator extends HorizontalScrollView implements PageIndi
 
     private int mTextSize = 18;
 
+    private boolean mCanClickable = false;
+
     private final OnClickListener mTabClickListener = new OnClickListener() {
         public void onClick(View view) {
+            if (!mCanClickable) {
+                return;
+            }
             TabView tabView = (TabView) view;
             final int oldSelected = mViewPager.getCurrentItem();
             final int newSelected = tabView.getIndex();
@@ -100,6 +105,10 @@ public class StreamTabIndicator extends HorizontalScrollView implements PageIndi
 
     public void setOnTabReselectedListener(OnTabReselectedListener listener) {
         mTabReselectedListener = listener;
+    }
+
+    public void setCanClickable(boolean canClickable) {
+        this.mCanClickable = canClickable;
     }
 
     @Override

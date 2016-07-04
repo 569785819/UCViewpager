@@ -121,7 +121,11 @@ public class MainViewPager extends ViewPager {
     @Override
     public boolean onTouchEvent(MotionEvent event) {
         if (mDoViewPagerTouch) {
-            return super.onTouchEvent(event);
+            try {
+                return super.onTouchEvent(event);
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
         }
         return true;
     }
