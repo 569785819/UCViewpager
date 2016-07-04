@@ -59,7 +59,19 @@ public class StreamPagerFragment extends Fragment {
         LLog.v("StreamPagerFragment onResume : " + mStrTab);
         super.onResume();
 
-        mStreamRecyclerMode.loadMore();
+        new Handler().postDelayed(new Runnable() {
+            @Override
+            public void run() {
+                mRefreshRecyclerLayout.recivedDataNetError();
+            }
+        }, 2000);
+
+        new Handler().postDelayed(new Runnable() {
+            @Override
+            public void run() {
+                mRefreshRecyclerLayout.recivedServiceError();
+            }
+        }, 12000);
     }
 
     @Override
@@ -81,7 +93,7 @@ public class StreamPagerFragment extends Fragment {
 
         @Override
         public void bindItemView(CommonViewHolder viewHolder, Date date, int position) {
-            viewHolder.setText(R.id.TextView_time, position + "--" + date.toString());
+            viewHolder.setText(R.id.TextView_content, position + "--" + date.toString());
             View clickView = viewHolder.getView(R.id.View_Item_click);
             CommonViewHolder.setData(clickView, date);
             clickView.setOnClickListener(mClickListener);

@@ -84,7 +84,7 @@ public class RefreshRecyclerView extends RecyclerView {
         return mRefreshLayoutManager.findLastVisibleItemPosition();
     }
 
-    private OverScrollListener mOverScrollListener = new OverScrollListener() {
+    private RefreshLayoutManager.OverScrollListener mOverScrollListener = new RefreshLayoutManager.OverScrollListener() {
         @Override
         public void overScrollBy(int dy) {
             if (mIsOverTop == false && mIsRefreshing == false && dy < 0) {

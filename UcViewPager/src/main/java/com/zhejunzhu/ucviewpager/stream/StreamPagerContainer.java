@@ -123,9 +123,9 @@ public class StreamPagerContainer {
 
         @Override
         public void onPageSelected(int position) {
-            if (position > 0 && mStreamViewPager.getOffscreenPageLimit() < 5) {
-                mStreamViewPager.setOffscreenPageLimit(3);
-            }
+//            if (position > 0 && mStreamViewPager.getOffscreenPageLimit() < 5) {
+//                mStreamViewPager.setOffscreenPageLimit(3);
+//            }
         }
 
         @Override

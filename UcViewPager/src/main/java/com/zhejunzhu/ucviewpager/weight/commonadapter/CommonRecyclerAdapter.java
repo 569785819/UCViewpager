@@ -27,19 +27,19 @@ public abstract class CommonRecyclerAdapter<TData> extends RecyclerView.Adapter 
     }
 
     public void addTopDatas(List<TData> newDatas) {
-        synchronized (mDatas){
+        synchronized (mDatas) {
             mDatas.addAll(0, newDatas);
         }
     }
 
     public void addBottomDatas(List<TData> newDatas) {
-        synchronized (mDatas){
+        synchronized (mDatas) {
             mDatas.addAll(newDatas);
         }
     }
 
     @Override
-    public CommonViewHolder onCreateViewHolder(ViewGroup parent, int layoutId) {
+    public final CommonViewHolder onCreateViewHolder(ViewGroup parent, int layoutId) {
         CommonViewHolder viewHolder = new CommonViewHolder(mContext, parent, layoutId);
         return viewHolder;
     }
@@ -55,10 +55,6 @@ public abstract class CommonRecyclerAdapter<TData> extends RecyclerView.Adapter 
         }
         return getLayoutId(mDatas.get(position), position);
     }
-
-    public abstract int getLayoutId(TData data, int position);
-
-    public abstract void bindView(CommonViewHolder viewHolder, TData data, int position);
 
     @Override
     public void onBindViewHolder(RecyclerView.ViewHolder holder, int position) {
@@ -90,7 +86,7 @@ public abstract class CommonRecyclerAdapter<TData> extends RecyclerView.Adapter 
         return count;
     }
 
-    protected int getFootViewPosition() {
+    public int getFootViewPosition() {
         if (mHasFootView) {
             return mDatas.size();
         } else {
@@ -112,5 +108,7 @@ public abstract class CommonRecyclerAdapter<TData> extends RecyclerView.Adapter 
     public void bindHeadView(RecyclerView.ViewHolder holder) {
     }
 
+    public abstract int getLayoutId(TData data, int position);
 
+    public abstract void bindView(CommonViewHolder viewHolder, TData data, int position);
 }

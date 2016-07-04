@@ -9,6 +9,10 @@ public class RefreshLayoutManager extends LinearLayoutManager {
 
     private OverScrollListener mListener;
 
+    public interface OverScrollListener {
+        void overScrollBy(int dy);
+    }
+
     public RefreshLayoutManager(Context context) {
         super(context);
     }

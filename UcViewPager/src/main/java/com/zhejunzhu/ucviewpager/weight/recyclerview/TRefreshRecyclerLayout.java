@@ -8,11 +8,12 @@ import android.widget.FrameLayout;
 
 import com.zhejunzhu.ucviewpager.weight.commonadapter.CommonRecyclerAdapter;
 import com.zhejunzhu.ucviewpager.weight.commonadapter.CommonViewHolder;
+import com.zhejunzhu.ucviewpager.weight.commonadapter.StreamRecyclerAdapter;
 
 import java.util.List;
 
 public abstract class TRefreshRecyclerLayout<TData> extends FrameLayout {
-    private CommonRecyclerAdapter mRecyclerAdapter;
+    private StreamRecyclerAdapter mRecyclerAdapter;
 
     private RecyclerModelImp mRecyclerModel;
 
@@ -37,7 +38,7 @@ public abstract class TRefreshRecyclerLayout<TData> extends FrameLayout {
 
     private void initView() {
         mRefreshRecyclerView = new RefreshRecyclerView(getContext());
-        mRecyclerAdapter = new CommonRecyclerAdapter<TData>(getContext()) {
+        mRecyclerAdapter = new StreamRecyclerAdapter<TData>(getContext()) {
             @Override
             public int getLayoutId(TData data, int position) {
                 return getItemLayoutId(data, position);
@@ -60,8 +61,8 @@ public abstract class TRefreshRecyclerLayout<TData> extends FrameLayout {
         @Override
         public void onScrollStateChanged(RecyclerView recyclerView, int newState) {
             super.onScrollStateChanged(recyclerView, newState);
-            if (mRefreshRecyclerView.getAdapter() != null && newState == RecyclerView.SCROLL_STATE_IDLE
-                    && mLastVisibleItem == mRefreshRecyclerView.getAdapter().getItemCount() - 1 && mHasMore) {
+            if (mRecyclerAdapter != null && newState == RecyclerView.SCROLL_STATE_IDLE && mRecyclerAdapter.getFootViewPosition() > 0
+                    && mLastVisibleItem == mRecyclerAdapter.getFootViewPosition() && mHasMore) {
                 if (mRecyclerModel != null) {
                     mRecyclerModel.loadMore();
                 }
@@ -96,11 +97,17 @@ public abstract class TRefreshRecyclerLayout<TData> extends FrameLayout {
     }
 
     public void recivedDataNetError() {
-
+        if (mRecyclerAdapter.getIsEmptyData()) {
+            mRecyclerAdapter.setEmptyWithNetError();
+        }
+        //set View result
     }
 
-    public void recivedDataErrorunknown() {
-
+    public void recivedServiceError() {
+        if (mRecyclerAdapter.getIsEmptyData()) {
+            mRecyclerAdapter.setEmptyWithServiceError();
+        }
+        //set View result
     }
 
     public CommonRecyclerAdapter getRecyclerAdapter() {

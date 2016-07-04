@@ -1,7 +1,6 @@
 package com.zhejunzhu.ucviewpager.viewobserver;
 
 import com.zhejunzhu.ucviewpager.MainTitleViewContainer;
-import com.zhejunzhu.ucviewpager.utils.LLog;
 
 public class StreamViewChangedObservable extends BaseViewChangedObservable<ProcessViewChangedObserver> {
 
@@ -21,7 +20,7 @@ public class StreamViewChangedObservable extends BaseViewChangedObservable<Proce
     }
 
     public void setAnimProcess(float process) {
-        LLog.e("StreamViewChangedObservable setAnimProcess : " + process);
+//        LLog.e("StreamViewChangedObservable setAnimProcess : " + process);
         for (ProcessViewChangedObserver mObserver : mObservers) {
             mObserver.onProcess(process);
         }

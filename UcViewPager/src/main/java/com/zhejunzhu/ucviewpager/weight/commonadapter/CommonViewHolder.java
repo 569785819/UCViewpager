@@ -42,6 +42,12 @@ public class CommonViewHolder extends RecyclerView.ViewHolder {
         return (T) view;
     }
 
+    public CommonViewHolder setText(int viewId, int strRes) {
+        TextView view = getView(viewId);
+        view.setText(view.getContext().getResources().getString(strRes));
+        return this;
+    }
+
     public CommonViewHolder setText(int viewId, String text) {
         TextView view = getView(viewId);
         view.setText(text);

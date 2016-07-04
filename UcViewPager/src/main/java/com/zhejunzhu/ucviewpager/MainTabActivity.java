@@ -13,7 +13,7 @@ public class MainTabActivity extends FragmentActivity {
         mMainTab = new MainTab(this, getSupportFragmentManager());
         setContentView(mMainTab.getView());
 
-        //test fragment stream
+//        //test fragment stream
 //        ViewGroup view = (ViewGroup) LayoutInflater.from(this).inflate(R.layout.activity_main_tab, null);
 //        view.removeAllViews();
 //        setContentView(view);

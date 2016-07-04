@@ -200,17 +200,30 @@ public class StreamTabIndicator extends HorizontalScrollView implements PageIndi
         if (mListener != null) {
             mListener.onPageScrolled(index, process, arg2);
         }
+        if (process == 0f) {
+            clearTabChang(index);
+        }
+    }
+
+    public void clearTabChang(int currentIndex) {
+        for (int i = 0; i < mTabLayout.getChildCount(); i++) {
+            if (currentIndex == i) {
+                continue;
+            }
+            TextView tab = (TextView) mTabLayout.getChildAt(i);
+            if (tab != null) {
+                tab.setTextColor(mUnSelectColor);
+                tab.setScaleX(1);
+                tab.setScaleY(1);
+            }
+        }
     }
 
     @Override
     public void onPageSelected(int index) {
+        LLog.e("indicator onPageSelected : " + index);
         setCurrentItem(index);
-        TextView leftTab = (TextView) mTabLayout.getChildAt(index);
-        if (leftTab != null) {
-            leftTab.setTextColor(mUnSelectColor);
-            leftTab.setScaleX(1);
-            leftTab.setScaleY(1);
-        }
+
         if (mListener != null) {
             mListener.onPageSelected(index);
         }
@@ -308,7 +321,7 @@ public class StreamTabIndicator extends HorizontalScrollView implements PageIndi
 
         public TabView(Context context) {
             super(context, null, R.attr.vpiTabPageIndicatorStyle);
-            setPadding(35, 10, 35, 10);
+            setPadding(20, 15, 20, 15);
             setTextSize(mTextSize);
             setTextColor(mUnSelectColor);
         }
