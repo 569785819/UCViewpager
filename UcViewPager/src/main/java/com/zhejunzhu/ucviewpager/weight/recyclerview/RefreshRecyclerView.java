@@ -259,11 +259,15 @@ public class RefreshRecyclerView extends RecyclerView {
         mIsRefreshing = false;
         setOverDragY(RefreshStateLayout.sHeight);
         mRefreshStateLayout.setRefreshCountState(newCount);
-        getHandler().postDelayed(new Runnable() {
-            @Override
-            public void run() {
-                doEndRefreshing();
-            }
-        }, PrivateAnimConstant.ANIM_DURA_XLONG);
+        if (getHandler() != null) {
+            getHandler().postDelayed(new Runnable() {
+                @Override
+                public void run() {
+                    doEndRefreshing();
+                }
+            }, PrivateAnimConstant.ANIM_DURA_XLONG);
+        } else {
+            doEndRefreshing();
+        }
     }
 }
