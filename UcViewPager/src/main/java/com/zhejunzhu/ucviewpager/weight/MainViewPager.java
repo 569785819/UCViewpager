@@ -93,7 +93,7 @@ public class MainViewPager extends ViewPager {
                 break;
         }
 
-        if (mInterceptTouch) {
+        if (mInterceptTouch && mSteamOpenedTag == false) {
             return true;
         }
         return super.onInterceptTouchEvent(ev);
@@ -134,7 +134,7 @@ public class MainViewPager extends ViewPager {
                     mSwitchViewPagerTouch = false;
                 }
 
-                if (mInterceptTouch == false) {
+                if (mInterceptTouch == false && mSteamOpenedTag == false) {
                     float mMoveX = event.getX();
                     float mMoveY = event.getY();
                     if (Math.abs(mMoveX - mDownX) + Math.abs(mMoveY - mDownY) > 5) {

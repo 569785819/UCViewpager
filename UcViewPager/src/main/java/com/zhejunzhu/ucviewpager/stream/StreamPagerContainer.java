@@ -81,6 +81,8 @@ public class StreamPagerContainer {
                     LLog.e("onViewPagerStreamToggled : " + isOpen);
                     mStreamViewPager.setAllowScorll(isOpen);
                     mIndicator.setCanClickable(isOpen);
+                    mStreamPagerCenterContainer.getView().setVisibility(isOpen ?
+                            View.INVISIBLE : View.VISIBLE);
                 }
             };
 
