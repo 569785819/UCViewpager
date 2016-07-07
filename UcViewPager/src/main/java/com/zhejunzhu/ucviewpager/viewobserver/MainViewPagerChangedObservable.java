@@ -2,8 +2,8 @@ package com.zhejunzhu.ucviewpager.viewobserver;
 
 import android.support.v4.view.ViewPager;
 
-import com.zhejunzhu.ucviewpager.weight.MainViewPager;
 import com.zhejunzhu.ucviewpager.MainViewPagerAdapter;
+import com.zhejunzhu.ucviewpager.weight.MainViewPager;
 
 public class MainViewPagerChangedObservable extends BaseViewChangedObservable<ProcessViewChangedObserver>
         implements ViewPager.OnPageChangeListener {

@@ -4,6 +4,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.view.ViewTreeObserver;
 
+import com.zhejunzhu.ucviewpager.stream.StreamPagerCenterContainer;
 import com.zhejunzhu.ucviewpager.utils.AndroidUtils;
 import com.zhejunzhu.ucviewpager.viewobserver.MainViewPagerChangedObservable;
 import com.zhejunzhu.ucviewpager.viewobserver.ProcessViewChangedObserver;
@@ -16,7 +17,6 @@ import butterknife.ButterKnife;
 public class MainTitleViewContainer {
     public static int sTitleLayoutHeight;
     public static int sTitleStreamTopHeight;
-    public static int sTitleBottomGridHeight;
     public static int sTitleBuleTopHeight;
     public static int sTitleBuleBottomHeight;
     public static int sTitleShadowHeight;
@@ -31,8 +31,6 @@ public class MainTitleViewContainer {
     public View mSearchLayout;
     @BindView(R.id.title_bottom)
     public View mBlueBottom;
-    @BindView(R.id.title_bottom_bottom)
-    public View mWriteView;
     @BindView(R.id.title_blue_bg)
     public View mBlueLayoutBg;
     @BindView(R.id.title_search_bg)
@@ -60,13 +58,18 @@ public class MainTitleViewContainer {
     }
 
     private void resizeBottomBgHeight() {
-        addLayoutPreDrawListener(new ViewTreeObserver.OnPreDrawListener() {
+        mBlueLayout.getViewTreeObserver().addOnPreDrawListener(new ViewTreeObserver.OnPreDrawListener() {
             @Override
             public boolean onPreDraw() {
                 int height = mBlueLayout.getHeight();
-                if (height > 0) {
-                    removeLayoutPreDrawListener(this);
+                if (height > 0 && StreamPagerCenterContainer.sStreamPagerCenterHeight > 0) {
+                    mBlueLayout.getViewTreeObserver().removeOnPreDrawListener(this);
                     initFirstValues();
+
+                    MainViewPagerChangedObservable mainViewPagerChangedObservable =
+                            ViewChangedObservableManager.getInstance(MainViewPagerChangedObservable.class);
+                    mainViewPagerChangedObservable.onPageScrolled(0, 0.1f, 0);
+                    mainViewPagerChangedObservable.onPageScrolled(0, 0, 0);
                 }
                 return true;
             }
@@ -78,35 +81,30 @@ public class MainTitleViewContainer {
         blueLp.height = mBlueLayout.getHeight();
         mBlueLayoutBg.setLayoutParams(blueLp);
 
+        sTitleLayoutHeight = mBlueLayout.getHeight() + StreamPagerCenterContainer.sStreamPagerCenterHeight;
+
         ViewGroup.LayoutParams darkLp = mTitleDarkShadow.getLayoutParams();
-        darkLp.height = mContentView.getHeight();
+        darkLp.height = sTitleLayoutHeight;
         mTitleDarkShadow.setLayoutParams(darkLp);
 
-        sTitleLayoutHeight = mContentView.getHeight();
-        sTitleBottomGridHeight = mWriteView.getHeight();
+
         sTitleStreamTopHeight = mSearchStreamTopLayout.getHeight();
         sTitleBuleBottomHeight = mBlueBottom.getHeight();
         sTitleBuleTopHeight = mBlueTop.getHeight();
         sTitleShadowHeight = mTitleShadowTop.getHeight();
 
         mSearchStreamTopLayout.setY(-sTitleStreamTopHeight);
-        mTitleDarkShadow.setVisibility(View.GONE);
+        mTitleDarkShadow.setVisibility(View.INVISIBLE);
         mTitleShadowBottom.setVisibility(View.GONE);
         mTitleShadowTop.setVisibility(View.GONE);
     }
 
-    public void addLayoutPreDrawListener(ViewTreeObserver.OnPreDrawListener listener) {
-        mBlueLayout.getViewTreeObserver().addOnPreDrawListener(listener);
-    }
-
-    public void removeLayoutPreDrawListener(ViewTreeObserver.OnPreDrawListener listener) {
-        mBlueLayout.getViewTreeObserver().removeOnPreDrawListener(listener);
-    }
-
     public void initObserver() {
-        MainViewPagerChangedObservable mainViewPagerChangedObservable = ViewChangedObservableManager.getInstance(MainViewPagerChangedObservable.class);
+        MainViewPagerChangedObservable mainViewPagerChangedObservable = ViewChangedObservableManager
+                .getInstance(MainViewPagerChangedObservable.class);
         mainViewPagerChangedObservable.addObserver(mMainPagerChangedObserver);
-        StreamViewChangedObservable streamViewChangedObservable = ViewChangedObservableManager.getInstance(StreamViewChangedObservable.class);
+        StreamViewChangedObservable streamViewChangedObservable = ViewChangedObservableManager.getInstance
+                (StreamViewChangedObservable.class);
         streamViewChangedObservable.addObserver(mStreamViewChangedObserver);
     }
 
@@ -128,7 +126,6 @@ public class MainTitleViewContainer {
             mBlueTop.setScaleX(scale);
             mSearchLayout.setScaleX(scale);
             mBlueBottom.setScaleX(scale);
-            mWriteView.setScaleX(scale);
 
             setShadowProcess(process);
         }
@@ -153,7 +150,8 @@ public class MainTitleViewContainer {
             float bottomIndex = sTitleLayoutHeight - process * moveY;
             float bottomShadowY = sTitleLayoutHeight - mTitleShadowBottom.getHeight() - process * moveY;
             float topShadowY = process * sTitleStreamTopHeight;
-            topShadowY = topShadowY + sTitleShadowHeight > bottomIndex ? bottomIndex - sTitleShadowHeight : topShadowY;
+            topShadowY = topShadowY + sTitleShadowHeight > bottomIndex ? bottomIndex - sTitleShadowHeight :
+                    topShadowY;
             mTitleShadowTop.setY(topShadowY);
             mTitleShadowBottom.setY(bottomShadowY);
         }
@@ -171,8 +169,6 @@ public class MainTitleViewContainer {
             mBlueLayoutBg.setY(-process * mBlueBottom.getHeight());
             mSearchLayoutBg.setAlpha(1 - process);
             mBlueBottom.setAlpha(1 - process * 2.5f);
-            mWriteView.setX(-process * mWriteView.getWidth());
-            mWriteView.setY(sTitleLayoutHeight - sTitleBottomGridHeight - process * mBlueBottom.getHeight());
 
             int padding = (int) ((1 - process) * mSearchViewMargin);
             mSearchLayout.setPadding(padding, 0, padding, 0);

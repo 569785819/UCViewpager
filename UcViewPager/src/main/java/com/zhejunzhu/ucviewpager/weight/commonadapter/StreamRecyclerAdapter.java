@@ -9,7 +9,8 @@ import com.zhejunzhu.ucviewpager.R;
 import java.util.List;
 
 /**
- * based CommonRecyclerAdapter ,add Stream list empty option
+ * based CommonRecyclerAdapter:
+ * *add Stream list empty option
  */
 public abstract class StreamRecyclerAdapter<TData> extends CommonRecyclerAdapter<TData> {
     private static final int DEFAULT_EMPTY_COUNT = 10;
@@ -104,4 +105,5 @@ public abstract class StreamRecyclerAdapter<TData> extends CommonRecyclerAdapter
     public boolean getIsEmptyData() {
         return mIsEmptyData;
     }
+
 }

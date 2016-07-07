@@ -5,7 +5,6 @@ import android.support.v4.app.FragmentManager;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.view.ViewTreeObserver;
 
 import com.zhejunzhu.ucviewpager.viewobserver.ViewChangedObservableManager;
 import com.zhejunzhu.ucviewpager.weight.MainViewPager;
@@ -48,22 +47,12 @@ public class MainTab {
     }
 
     private void initView() {
-        mMainViewPagerAdapter = new MainViewPagerAdapter(mContext);
+        mMainViewPagerAdapter = new MainViewPagerAdapter(mContext, mFragmentManager);
         mMainPager.setAdapter(mMainViewPagerAdapter);
         mIndicator.configureIndicator(-1, -1, -1, 0, 0, R.color.theme_blue_dark, R.color.theme_blue);
         mIndicator.setViewPager(mMainPager);
 
         mTitleViewContainer = new MainTitleViewContainer(mTitleLayout);
-        mTitleViewContainer.addLayoutPreDrawListener(new ViewTreeObserver.OnPreDrawListener() {
-            @Override
-            public boolean onPreDraw() {
-                if (MainTitleViewContainer.sTitleBottomGridHeight > 0) {
-                    mTitleViewContainer.removeLayoutPreDrawListener(this);
-                    mMainViewPagerAdapter.mStreamPagerContainer.init(mFragmentManager);
-                }
-                return false;
-            }
-        });
     }
 
     public void onBackPressed() {

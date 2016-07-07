@@ -39,7 +39,8 @@ public abstract class CommonRecyclerAdapter<TData> extends RecyclerView.Adapter 
     }
 
     @Override
-    public final CommonViewHolder onCreateViewHolder(ViewGroup parent, int layoutId) {
+    public CommonViewHolder onCreateViewHolder(ViewGroup parent, int layoutId) {
+        LLog.e("onCreateViewHolder : " + parent.getChildCount());
         CommonViewHolder viewHolder = new CommonViewHolder(mContext, parent, layoutId);
         return viewHolder;
     }

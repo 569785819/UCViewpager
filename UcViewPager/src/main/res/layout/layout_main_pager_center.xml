@@ -1,0 +1,68 @@
+<?xml version="1.0" encoding="utf-8"?>
+<FrameLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/LayoutCenter"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content">
+
+    <ImageView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:scaleType="matrix"
+        android:src="@drawable/pager0_center"/>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="horizontal">
+
+        <Button
+            android:id="@+id/Button1"
+            android:layout_width="50dp"
+            android:layout_height="50dp"
+            android:layout_weight="1"
+            android:background="?android:attr/selectableItemBackground"
+            android:tag="icon1"/>
+
+        <Button
+            android:id="@+id/Button2"
+            android:layout_width="50dp"
+            android:layout_height="50dp"
+            android:layout_weight="1"
+            android:background="?android:attr/selectableItemBackground"
+            android:tag="icon2"/>
+
+        <Button
+            android:id="@+id/Button3"
+            android:layout_width="50dp"
+            android:layout_height="50dp"
+            android:layout_weight="1"
+            android:background="?android:attr/selectableItemBackground"
+            android:tag="icon3"/>
+
+        <Button
+            android:id="@+id/Button4"
+            android:layout_width="50dp"
+            android:layout_height="50dp"
+            android:layout_weight="1"
+            android:background="?android:attr/selectableItemBackground"
+            android:tag="icon4"/>
+
+        <Button
+            android:id="@+id/Button5"
+            android:layout_width="50dp"
+            android:layout_height="50dp"
+            android:layout_weight="1"
+            android:background="?android:attr/selectableItemBackground"
+            android:tag="icon5"/>
+
+        <Button
+            android:id="@+id/Button6"
+            android:layout_width="50dp"
+            android:layout_height="50dp"
+            android:layout_weight="1"
+            android:background="?android:attr/selectableItemBackground"
+            android:tag="icon6"/>
+
+    </LinearLayout>
+</FrameLayout>

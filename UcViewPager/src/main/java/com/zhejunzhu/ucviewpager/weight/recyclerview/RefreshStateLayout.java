@@ -11,7 +11,7 @@ import android.widget.TextView;
 
 import com.zhejunzhu.ucviewpager.R;
 import com.zhejunzhu.ucviewpager.utils.AndroidUtils;
-import com.zhejunzhu.ucviewpager.utils.PrivateAnimConstant;
+import com.zhejunzhu.ucviewpager.utils.AnimConstant;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -145,7 +145,7 @@ public class RefreshStateLayout {
         mRefreshAnim.setRepeatCount(ValueAnimator.INFINITE);
         mRefreshAnim.setRepeatMode(ValueAnimator.INFINITE);
         mRefreshAnim.setInterpolator(new LinearInterpolator());
-        mRefreshAnim.setDuration(PrivateAnimConstant.ANIM_DURA_XLONG);
+        mRefreshAnim.setDuration(AnimConstant.ANIM_DURA_XLONG);
         mRefreshAnim.start();
     }
 

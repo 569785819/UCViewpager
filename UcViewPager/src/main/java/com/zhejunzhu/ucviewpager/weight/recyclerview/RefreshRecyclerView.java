@@ -12,7 +12,7 @@ import android.view.ViewGroup;
 import android.view.ViewTreeObserver;
 
 import com.zhejunzhu.ucviewpager.utils.LLog;
-import com.zhejunzhu.ucviewpager.utils.PrivateAnimConstant;
+import com.zhejunzhu.ucviewpager.utils.AnimConstant;
 
 public class RefreshRecyclerView extends RecyclerView {
     private RefreshLayoutManager mRefreshLayoutManager;
@@ -167,7 +167,7 @@ public class RefreshRecyclerView extends RecyclerView {
     public void doToggleToClose() {
         mIsAniming = true;
         ObjectAnimator end = ObjectAnimator.ofFloat(this, "OverDragY", mOverScrollY, 0);
-        end.setDuration(PrivateAnimConstant.ANIM_DURA_SHORT);
+        end.setDuration(AnimConstant.ANIM_DURA_SHORT);
         end.addListener(mAnimListener);
         end.start();
     }
@@ -176,7 +176,7 @@ public class RefreshRecyclerView extends RecyclerView {
         mIsRefreshing = true;
         mIsAniming = true;
         ObjectAnimator end = ObjectAnimator.ofFloat(this, "OverDragY", mOverScrollY, RefreshStateLayout.sHeight);
-        end.setDuration(PrivateAnimConstant.ANIM_DURA_SHORT);
+        end.setDuration(AnimConstant.ANIM_DURA_SHORT);
         end.addListener(mAnimListener);
         end.start();
         mRefreshStateLayout.startRefreshAnim();
@@ -189,7 +189,7 @@ public class RefreshRecyclerView extends RecyclerView {
         mRefreshStateLayout.endRefreshAnim();
         mIsAniming = true;
         ObjectAnimator end = ObjectAnimator.ofFloat(this, "OverDragY", RefreshStateLayout.sHeight, 0);
-        end.setDuration(PrivateAnimConstant.ANIM_DURA_SHORT);
+        end.setDuration(AnimConstant.ANIM_DURA_SHORT);
         end.addListener(new Animator.AnimatorListener() {
             @Override
             public void onAnimationStart(Animator animation) {
@@ -265,7 +265,7 @@ public class RefreshRecyclerView extends RecyclerView {
                 public void run() {
                     doEndRefreshing();
                 }
-            }, PrivateAnimConstant.ANIM_DURA_XLONG);
+            }, AnimConstant.ANIM_DURA_XLONG);
         } else {
             doEndRefreshing();
         }

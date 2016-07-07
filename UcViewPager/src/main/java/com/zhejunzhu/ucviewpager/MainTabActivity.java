@@ -23,6 +23,7 @@ public class MainTabActivity extends FragmentActivity {
 //        StreamPagerFragment page = StreamPagerFragment.newInstance("推荐");
 //        transaction.replace(R.id.main_layout, page);
 //        transaction.commit();
+
     }
 
     @Override

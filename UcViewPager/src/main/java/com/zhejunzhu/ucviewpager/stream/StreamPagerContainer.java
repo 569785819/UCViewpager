@@ -7,7 +7,6 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
-import com.zhejunzhu.ucviewpager.MainTitleViewContainer;
 import com.zhejunzhu.ucviewpager.R;
 import com.zhejunzhu.ucviewpager.utils.LLog;
 import com.zhejunzhu.ucviewpager.viewobserver.MainViewPagerChangedObservable;
@@ -26,7 +25,6 @@ import static com.zhejunzhu.ucviewpager.MainTitleViewContainer.sTitleBuleTopHeig
 import static com.zhejunzhu.ucviewpager.MainTitleViewContainer.sTitleLayoutHeight;
 import static com.zhejunzhu.ucviewpager.MainTitleViewContainer.sTitleStreamTopHeight;
 
-
 public class StreamPagerContainer {
     public ViewGroup mContentView;
     @BindView(R.id.streamViewPager)
@@ -38,26 +36,29 @@ public class StreamPagerContainer {
 
     private StreamPagerAdapter mStreamPagerAdapter;
 
+    private StreamPagerCenterContainer mStreamPagerCenterContainer;
+
     public StreamPagerContainer() {
         initObserver();
     }
 
-    public View createView(Context context) {
+    public View createView(Context context, FragmentManager fragmentManager) {
         if (mContentView == null) {
             mContentView = (ViewGroup) LayoutInflater.from(context).inflate(R.layout
                     .layout_main_pager_stream, null);
             ButterKnife.bind(this, mContentView);
+            mStreamPagerCenterContainer = new StreamPagerCenterContainer(mContentView);
+            initView(fragmentManager);
         }
         return mContentView;
     }
 
-    public void init(FragmentManager fragmentManager) {
+    public void initView(FragmentManager fragmentManager) {
         mStreamViewPager.setOffscreenPageLimit(0);
         mStreamViewPager.addOnPageChangeListener(mStreamPageChange);
         mStreamPagerAdapter = new StreamPagerAdapter(mStreamViewPager.getContext(), fragmentManager);
         mStreamViewPager.setAdapter(mStreamPagerAdapter);
         mIndicator.setViewPager(mStreamViewPager);
-        mStreamViewChangedObserver.doProcess(0);
     }
 
     public void bindMainViewPager(MainViewPager mainViewPager) {
@@ -65,9 +66,11 @@ public class StreamPagerContainer {
     }
 
     public void initObserver() {
-        MainViewPagerChangedObservable mainViewPagerChangedObservable = ViewChangedObservableManager.getInstance(MainViewPagerChangedObservable.class);
+        MainViewPagerChangedObservable mainViewPagerChangedObservable = ViewChangedObservableManager
+                .getInstance(MainViewPagerChangedObservable.class);
         mainViewPagerChangedObservable.addObserver(mMainViewPagerChangedObserver);
-        StreamViewChangedObservable streamViewChangedObservable = ViewChangedObservableManager.getInstance(StreamViewChangedObservable.class);
+        StreamViewChangedObservable streamViewChangedObservable = ViewChangedObservableManager.getInstance
+                (StreamViewChangedObservable.class);
         streamViewChangedObservable.addObserver(mStreamViewChangedObserver);
     }
 
@@ -84,9 +87,6 @@ public class StreamPagerContainer {
     private ProcessViewChangedObserver mMainViewPagerChangedObserver = new ProcessViewChangedObserver() {
         @Override
         public void doProcess(float process) {
-            if (mContentView == null || MainTitleViewContainer.sTitleLayoutHeight <= 0) {
-                return;
-            }
             mStreamViewPager.setY(sTitleLayoutHeight - process * (sTitleBuleTopHeight +
                     sTitleBuleBottomHeight));
         }
@@ -104,7 +104,8 @@ public class StreamPagerContainer {
                 mIndicatorLayout.setVisibility(View.GONE);
             } else {
                 mIndicatorLayout.setVisibility(View.VISIBLE);
-                mIndicatorLayout.setY(sTitleLayoutHeight - process * (sTitleLayoutHeight - sTitleStreamTopHeight));
+                mIndicatorLayout.setY(sTitleLayoutHeight - process * (sTitleLayoutHeight -
+                        sTitleStreamTopHeight));
             }
         }
     };
@@ -116,9 +117,6 @@ public class StreamPagerContainer {
 
         @Override
         public void onPageSelected(int position) {
-//            if (position > 0 && mStreamViewPager.getOffscreenPageLimit() < 5) {
-//                mStreamViewPager.setOffscreenPageLimit(3);
-//            }
         }
 
         @Override

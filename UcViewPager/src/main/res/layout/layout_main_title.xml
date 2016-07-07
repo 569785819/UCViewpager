@@ -1,7 +1,7 @@
 <FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:layout_width="match_parent"
-    android:layout_height="wrap_content"
-    android:orientation="vertical">
+             android:layout_width="match_parent"
+             android:layout_height="wrap_content"
+             android:orientation="vertical">
 
     <LinearLayout
         android:id="@+id/title_content_layout"
@@ -18,7 +18,7 @@
                 android:id="@+id/title_blue_bg"
                 android:layout_width="match_parent"
                 android:layout_height="10dp"
-                android:background="#52ace5" />
+                android:background="#52ace5"/>
 
             <LinearLayout
                 android:layout_width="match_parent"
@@ -31,7 +31,7 @@
                     android:layout_height="wrap_content"
                     android:background="#52ace5"
                     android:scaleType="matrix"
-                    android:src="@drawable/title_top" />
+                    android:src="@drawable/title_top"/>
 
                 <FrameLayout
                     android:id="@+id/title_search_layout"
@@ -46,14 +46,14 @@
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:scaleType="matrix"
-                        android:src="@drawable/search_layout" />
+                        android:src="@drawable/search_layout"/>
 
                     <ImageView
                         android:id="@+id/title_search_bg"
                         android:layout_width="match_parent"
                         android:layout_height="match_parent"
                         android:background="#60ffffff"
-                        android:scaleType="matrix" />
+                        android:scaleType="matrix"/>
 
                 </FrameLayout>
 
@@ -62,44 +62,34 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:scaleType="matrix"
-                    android:src="@drawable/title_bottom" />
-
+                    android:src="@drawable/title_bottom"/>
             </LinearLayout>
-
         </FrameLayout>
-
-        <ImageView
-            android:id="@+id/title_bottom_bottom"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:scaleType="matrix"
-            android:src="@drawable/pager0_center" />
-
     </LinearLayout>
 
     <ImageView
         android:id="@+id/title_dark_shadow"
         android:layout_width="match_parent"
         android:layout_height="10dp"
-        android:background="#80000000" />
+        android:background="#80000000"/>
 
     <View
         android:id="@+id/title_shadow_top"
         android:layout_width="match_parent"
         android:layout_height="15dp"
-        android:background="@drawable/shadow_1" />
+        android:background="@drawable/shadow_1"/>
 
     <View
         android:id="@+id/title_shadow_bottom"
         android:layout_width="match_parent"
         android:layout_height="15dp"
-        android:background="@drawable/shadow_2" />
+        android:background="@drawable/shadow_2"/>
 
     <ImageView
         android:id="@+id/title_stream_top"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:scaleType="matrix"
-        android:src="@drawable/title_stream_top" />
+        android:src="@drawable/title_stream_top"/>
 
 </FrameLayout>

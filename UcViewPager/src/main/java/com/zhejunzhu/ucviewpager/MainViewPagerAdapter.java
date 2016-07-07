@@ -1,6 +1,7 @@
 package com.zhejunzhu.ucviewpager;
 
 import android.content.Context;
+import android.support.v4.app.FragmentManager;
 import android.support.v4.view.PagerAdapter;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -15,11 +16,17 @@ public class MainViewPagerAdapter extends PagerAdapter {
     public static final int MAIN_PAGER_COUNT = 2;
     public static final int MAIN_PAGER_0 = 0;
     public static final int MAIN_PAGER_1 = 1;
-    public StreamPagerContainer mStreamPagerContainer;
+
+    private StreamPagerContainer mStreamPagerContainer;
+
     private Context mContext;
+
     private HashMap<Integer, View> mPagers = new HashMap<>();
 
-    public MainViewPagerAdapter(Context context) {
+    private FragmentManager mFragmentManager;
+
+    public MainViewPagerAdapter(Context context, FragmentManager fragmentManager) {
+        mFragmentManager = fragmentManager;
         mContext = context;
         mStreamPagerContainer = new StreamPagerContainer();
     }
@@ -59,7 +66,7 @@ public class MainViewPagerAdapter extends PagerAdapter {
         LayoutInflater inflater = LayoutInflater.from(mContext);
         View view = null;
         if (position == MAIN_PAGER_0) {
-            view = mStreamPagerContainer.createView(mContext);
+            view = mStreamPagerContainer.createView(mContext, mFragmentManager);
             if (viewGroup instanceof MainViewPager) {
                 mStreamPagerContainer.bindMainViewPager((MainViewPager) viewGroup);
             }

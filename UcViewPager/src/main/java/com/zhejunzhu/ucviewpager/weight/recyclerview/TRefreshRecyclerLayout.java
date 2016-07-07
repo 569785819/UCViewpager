@@ -2,6 +2,7 @@ package com.zhejunzhu.ucviewpager.weight.recyclerview;
 
 import android.content.Context;
 import android.support.annotation.Nullable;
+import android.support.v7.widget.DefaultItemAnimator;
 import android.support.v7.widget.RecyclerView;
 import android.util.AttributeSet;
 import android.widget.FrameLayout;
@@ -49,6 +50,7 @@ public abstract class TRefreshRecyclerLayout<TData> extends FrameLayout {
                 bindItemView(viewHolder, data, position);
             }
         };
+        mRefreshRecyclerView.setItemAnimator(new DefaultItemAnimator());
         mRefreshRecyclerView.setAdapter(mRecyclerAdapter);
         mRefreshRecyclerView.addOnScrollListener(mOnScrollListener);
         mRefreshRecyclerView.setOnDragRefreshListener(mOnDragRefreshListener);

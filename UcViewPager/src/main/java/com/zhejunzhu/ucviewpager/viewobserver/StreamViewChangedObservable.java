@@ -10,6 +10,8 @@ public class StreamViewChangedObservable extends BaseViewChangedObservable<Proce
         float process = distance / MainTitleViewContainer.sTitleLayoutHeight;
         if (process > 1f) {
             process = 1f;
+        } else if (process < 0) {
+            process = 0;
         }
 
         setAnimProcess(process);
