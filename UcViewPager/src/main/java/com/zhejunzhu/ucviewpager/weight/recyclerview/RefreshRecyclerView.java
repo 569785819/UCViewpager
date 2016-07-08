@@ -11,8 +11,8 @@ import android.view.MotionEvent;
 import android.view.ViewGroup;
 import android.view.ViewTreeObserver;
 
-import com.zhejunzhu.ucviewpager.utils.LLog;
 import com.zhejunzhu.ucviewpager.utils.AnimConstant;
+import com.zhejunzhu.ucviewpager.utils.LLog;
 
 public class RefreshRecyclerView extends RecyclerView {
     private RefreshLayoutManager mRefreshLayoutManager;
@@ -33,7 +33,7 @@ public class RefreshRecyclerView extends RecyclerView {
 
     private boolean mIsAniming = false;
 
-    private boolean mIsRefreshing = false;
+    private boolean mRefreshShowing = false;
 
     private OnDragRefreshListener mOnDragRefreshListener;
 
@@ -84,11 +84,12 @@ public class RefreshRecyclerView extends RecyclerView {
         return mRefreshLayoutManager.findLastVisibleItemPosition();
     }
 
-    private RefreshLayoutManager.OverScrollListener mOverScrollListener = new RefreshLayoutManager.OverScrollListener() {
+    private RefreshLayoutManager.OverScrollListener mOverScrollListener = new RefreshLayoutManager
+            .OverScrollListener() {
         @Override
         public void overScrollBy(int dy) {
-            if (mIsOverTop == false && mIsRefreshing == false && dy < 0) {
-                LLog.i("OverScrollListener overScrollBy");
+            if (mIsOverTop == false && mRefreshShowing == false && dy < 0) {
+//                LLog.i("OverScrollListener overScrollBy");
                 mIsOverTop = true;
                 mOverScrollY = 0;
             }
@@ -97,7 +98,7 @@ public class RefreshRecyclerView extends RecyclerView {
 
     @Override
     public boolean dispatchTouchEvent(MotionEvent ev) {
-        if (mIsRefreshing || mIsAniming) {
+        if (mRefreshShowing || mIsAniming) {
             return super.dispatchTouchEvent(ev);
         }
 
@@ -173,9 +174,10 @@ public class RefreshRecyclerView extends RecyclerView {
     }
 
     public void doToggleToRefeshing() {
-        mIsRefreshing = true;
+        mRefreshShowing = true;
         mIsAniming = true;
-        ObjectAnimator end = ObjectAnimator.ofFloat(this, "OverDragY", mOverScrollY, RefreshStateLayout.sHeight);
+        ObjectAnimator end = ObjectAnimator.ofFloat(this, "OverDragY", mOverScrollY, RefreshStateLayout
+                .sHeight);
         end.setDuration(AnimConstant.ANIM_DURA_SHORT);
         end.addListener(mAnimListener);
         end.start();
@@ -186,6 +188,9 @@ public class RefreshRecyclerView extends RecyclerView {
     }
 
     public void doEndRefreshing() {
+        if (mRefreshShowing == false) {
+            return;
+        }
         mRefreshStateLayout.endRefreshAnim();
         mIsAniming = true;
         ObjectAnimator end = ObjectAnimator.ofFloat(this, "OverDragY", RefreshStateLayout.sHeight, 0);
@@ -193,25 +198,26 @@ public class RefreshRecyclerView extends RecyclerView {
         end.addListener(new Animator.AnimatorListener() {
             @Override
             public void onAnimationStart(Animator animation) {
+            }
 
+            @Override
+            public void onAnimationRepeat(Animator animation) {
             }
 
             @Override
             public void onAnimationEnd(Animator animation) {
                 mIsAniming = false;
+                mRefreshShowing = false;
                 mRefreshStateLayout.setRefreshState();
             }
 
             @Override
             public void onAnimationCancel(Animator animation) {
                 mIsAniming = false;
+                mRefreshShowing = false;
                 mRefreshStateLayout.setRefreshState();
             }
 
-            @Override
-            public void onAnimationRepeat(Animator animation) {
-
-            }
         });
         end.start();
     }
@@ -241,33 +247,24 @@ public class RefreshRecyclerView extends RecyclerView {
         setY(mRefreshStateLayout.setOverDrag((int) overDragY));
     }
 
-    public void setRefreshing(boolean refreshing) {
-        if (mIsRefreshing == refreshing) {
+    public void setRefreshEnd(int newCount) {
+        if (mRefreshShowing == false) {
             return;
         }
-
-        mIsRefreshing = refreshing;
-        if (mIsRefreshing) {
-            doToggleToRefeshing();
-        } else {
-            doEndRefreshing();
-        }
-    }
-
-    public void setRefreshEnd(int newCount) {
         mIsAniming = true;
-        mIsRefreshing = false;
         setOverDragY(RefreshStateLayout.sHeight);
         mRefreshStateLayout.setRefreshCountState(newCount);
         if (getHandler() != null) {
-            getHandler().postDelayed(new Runnable() {
-                @Override
-                public void run() {
-                    doEndRefreshing();
-                }
-            }, AnimConstant.ANIM_DURA_XLONG);
+            getHandler().postDelayed(mEndRefreshRunnable, AnimConstant.ANIM_DURA_XLONG);
         } else {
             doEndRefreshing();
         }
     }
+
+    public Runnable mEndRefreshRunnable = new Runnable() {
+        @Override
+        public void run() {
+            doEndRefreshing();
+        }
+    };
 }

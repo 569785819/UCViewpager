@@ -63,7 +63,8 @@ public abstract class TRefreshRecyclerLayout<TData> extends FrameLayout {
         @Override
         public void onScrollStateChanged(RecyclerView recyclerView, int newState) {
             super.onScrollStateChanged(recyclerView, newState);
-            if (mRecyclerAdapter != null && newState == RecyclerView.SCROLL_STATE_IDLE && mRecyclerAdapter.getFootViewPosition() > 0
+            if (mRecyclerAdapter != null && newState == RecyclerView.SCROLL_STATE_IDLE && mRecyclerAdapter
+                    .getFootViewPosition() > 0
                     && mLastVisibleItem == mRecyclerAdapter.getFootViewPosition() && mHasMore) {
                 if (mRecyclerModel != null) {
                     mRecyclerModel.loadMore();
@@ -78,7 +79,8 @@ public abstract class TRefreshRecyclerLayout<TData> extends FrameLayout {
         }
     };
 
-    private RefreshRecyclerView.OnDragRefreshListener mOnDragRefreshListener = new RefreshRecyclerView.OnDragRefreshListener() {
+    private RefreshRecyclerView.OnDragRefreshListener mOnDragRefreshListener = new RefreshRecyclerView
+            .OnDragRefreshListener() {
         @Override
         public void onDragRefresh() {
             mRecyclerModel.refreshAndLoad();
@@ -110,6 +112,15 @@ public abstract class TRefreshRecyclerLayout<TData> extends FrameLayout {
             mRecyclerAdapter.setEmptyWithServiceError();
         }
         //set View result
+    }
+
+    public void clickToRefresh() {
+        mRefreshRecyclerView.scrollToPosition(0);
+        mRefreshRecyclerView.doToggleToRefeshing();
+    }
+
+    public void goneRefreshStateView() {
+        mRefreshRecyclerView.doEndRefreshing();
     }
 
     public CommonRecyclerAdapter getRecyclerAdapter() {

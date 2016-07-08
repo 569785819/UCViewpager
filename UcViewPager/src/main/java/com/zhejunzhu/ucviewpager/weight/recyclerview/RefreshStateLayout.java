@@ -141,7 +141,8 @@ public class RefreshStateLayout {
             mRefreshAnim = null;
         }
         mRefreshState = RefreshState.state_refreshing;
-        mRefreshAnim = ObjectAnimator.ofFloat(mRefreshIcon, "Rotation", mRefreshIcon.getRotation(), mRefreshIcon.getRotation() + 360);
+        mRefreshAnim = ObjectAnimator.ofFloat(mRefreshIcon, "Rotation", mRefreshIcon.getRotation(),
+                mRefreshIcon.getRotation() + 360);
         mRefreshAnim.setRepeatCount(ValueAnimator.INFINITE);
         mRefreshAnim.setRepeatMode(ValueAnimator.INFINITE);
         mRefreshAnim.setInterpolator(new LinearInterpolator());
@@ -154,6 +155,7 @@ public class RefreshStateLayout {
             mRefreshAnim.end();
             mRefreshState = RefreshState.state_drag_refresh;
             mRefreshAnim = null;
+            mRefreshIcon.setImageResource(R.drawable.refresh_icon);
         }
     }
 }

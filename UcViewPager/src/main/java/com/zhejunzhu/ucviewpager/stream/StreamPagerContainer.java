@@ -1,6 +1,7 @@
 package com.zhejunzhu.ucviewpager.stream;
 
 import android.content.Context;
+import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.view.ViewPager;
 import android.view.LayoutInflater;
@@ -81,8 +82,12 @@ public class StreamPagerContainer {
                     LLog.e("onViewPagerStreamToggled : " + isOpen);
                     mStreamViewPager.setAllowScorll(isOpen);
                     mIndicator.setCanClickable(isOpen);
-                    mStreamPagerCenterContainer.getView().setVisibility(isOpen ?
-                            View.INVISIBLE : View.VISIBLE);
+                    if (isOpen == false) {
+                        Fragment fragment = mStreamPagerAdapter.getItem(mStreamViewPager.getCurrentItem());
+                        if (fragment instanceof StreamPagerFragment) {
+                            ((StreamPagerFragment) fragment).toggleCloseStream();
+                        }
+                    }
                 }
             };
 
